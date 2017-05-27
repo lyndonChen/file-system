@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender name="console-log" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{HH:mm:ss SSS\} %-5p] %m%n" />
+		</layout>
+	</appender>
+	<appender name="file-log" class="org.apache.log4j.DailyMaxRollingFileAppender">
+		<param name="file" value="${pom.log.dir}/shoppingmall-brand-web.log" />
+		<param name="append" value="true" />
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="maxBackupIndex" value="30" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yy-MM-dd HH:mm:ss SSS} %-5p]: %m%n" />
+		</layout>
+	</appender>
+
+	<logger name="com.mfwo" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="console-log"/>
+		<appender-ref ref="file-log" />
+	</logger>
+
+	<logger name="org.springframework" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="console-log"/>
+		<appender-ref ref="file-log" />
+	</logger>
+	
+	<logger name="com.ehaier.shoppingmall" additivity="false"> 
+		<level value="INFO" />
+		<appender-ref ref="console-log"/>
+		<appender-ref ref="file-log" />
+	</logger>
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="file-log" />
+	</root>
+</log4j:configuration>

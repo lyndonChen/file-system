@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+    default-autowire="no">
+
+	<!--FTP 配置信息-->
+	<bean id="ftpClientConfigure" class="com.mafwo.ftp.pool.FTPClientConfigure">
+		<property name="host" value="${ftp.host}"></property>
+		<property name="port" value="${ftp.port}"></property>
+		<property name="username" value="${ftp.username}"></property>
+		<property name="password" value="${ftp.password}"></property>
+		<property name="clientTimeout" value="${ftp.clientTimeout}"></property>
+	</bean>
+	<!--ftp工厂-->
+	<bean id="ftpClientFactory" class="com.mafwo.ftp.pool.FtpClientFactory">
+		<constructor-arg ref="ftpClientConfigure"></constructor-arg>
+	</bean>
+	<!--ftp池对象-->
+	<bean id="ftpClientPool" class="com.mafwo.ftp.pool.FTPClientPool">
+		<constructor-arg ref="ftpClientFactory"></constructor-arg>
+	</bean>
+	<bean id="ftpFileManager" class="com.mafwo.ftp.FTPFileManager"/>
+
+</beans>

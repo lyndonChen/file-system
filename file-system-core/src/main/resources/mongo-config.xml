@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/data/mongo
+        http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd"
+    default-autowire="no">
+
+	<!--定义mongo数据源-->
+	<mongo:mongo host="${mongo.host}" port="${mongo.port}" id="mongo">
+	    <mongo:options connections-per-host="8"
+	                   threads-allowed-to-block-for-connection-multiplier="4"
+	                   connect-timeout="1000"
+	                   max-wait-time="1500"
+	                   auto-connect-retry="true"
+	                   socket-keep-alive="true"
+	                   socket-timeout="1500"
+	                   slave-ok="true"
+	                   write-number="1"
+	                   write-timeout="0"
+	                   write-fsync="true"/>
+	</mongo:mongo>
+
+	<!-- 自定义工具类操作mongo GridFs数据-->
+	<!--第一种方式：自定义操作类，自定义GridFs操作 可以设置自定义字段信息-->
+	<bean id="fsUtils" class="com.mafwo.mongo.GridFSUtils" >
+		<constructor-arg name="dbname" value="files"></constructor-arg>
+		<constructor-arg name="gridName" value="fs"></constructor-arg>
+		<constructor-arg ref="mongo"></constructor-arg>
+	</bean>
+	<bean id="thumbUtils" class="com.mafwo.mongo.GridFSUtils" >
+		<constructor-arg name="dbname" value="files"></constructor-arg>
+		<constructor-arg name="gridName" value="thumb"></constructor-arg>
+		<constructor-arg ref="mongo"></constructor-arg>
+	</bean>
+
+	<!--第二种方式：通过spring-data-mongo正和，通过工厂模板方式操作mongo-GirdFs   暂未使用-->
+	<mongo:db-factory id="filesFactory" mongo-ref="mongo" dbname="files"/>
+	<mongo:mapping-converter id="converter" />
+	<bean id="gridFsTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+		<constructor-arg ref="filesFactory"></constructor-arg>
+		<constructor-arg ref="converter" />
+		<constructor-arg value="fs"></constructor-arg>
+	</bean>
+
+	<bean id="mongoFileFileManager" class="com.mafwo.mongo.MongoFileManager"/>
+
+</beans>

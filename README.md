@@ -1,7 +1,7 @@
 ## file-system
 主要结合mongo、ftp实现了文件存储、读取、图片类型文件处理等功能，提供使用mongo、FTP存储图片的封装，提供简单demo实现文件上传和图片查看功能
 ***
-###项目结构介绍
+### 项目结构介绍
 
 　　file-system：根项目  
 　　file-system-core：核心实现包，使用是应用此依赖即可，里边提供文件读取实现  
@@ -9,7 +9,7 @@
 　　file-system-web：web项目，提供简单的文件操作工具使用demo  
 
 ***
-###使用介绍
+### 使用介绍
 
 1. 使用时依赖file-system-core
 2. 如果使用mongo进行文件管理，在本项目中通过 <import resource="../mongo-config.xml" />引入mongo配置，同时在项目中添加如下两个参数：
